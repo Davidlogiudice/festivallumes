@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Le Festiv'Allumés</title>
+  <link rel="stylesheet" type="text/css" href="../style/index.css">
+  
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <a href="./about-me.html">
+        <img class="logo" src="../images/global/logo.svg" alt="Instagram">
+      </a>
+    </div>
+    <div class="nav-buttons">
+      <a href="./about-me.html">Photos festival !</a>
+      <a href="./contact.html">Partage photos et videos !</a>
+    </div>
+    <div id="instagram">
+      <a href="https://www.instagram.com/iammrspeedy/">
+        <img class="social-media-instagram" src="../images/global/instagram_logo.svg" alt="Instagram">
+      </a>
+    </div>
+  </header>
+  <h1>Partage photos et videos</h1>
+  <main class="flex-container">
+ 
+    <form class="contact" action="/contact" method="post" enctype="multipart/form-data">
+   
+      <label for="username">Prénom & Nom</label>
+      <input type="text" id="username" name="username" placeholder="Entrez votre nom et prénom !" required>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" placeholder="Entrez votre mail !" required>
+      <label for="message">Message:</label>
+      <textarea id="message" name="message" placeholder="Entrez votre message !" required></textarea>
+
+      <label for="images">Send images (PNG or JPG, max 25 MB each):</label>
+      <input type="file" id="images" name="images" accept="image/png, image/jpeg video/mp4" multiple required>
+      <progress id="upload-progress" max="100" value="0"></progress>
+      
+      <label for="captcha">CAPTCHA:</label>
+      <input type="text" id="captcha" name="captcha" placeholder="Resolvez le CAPTCHA" required>
+      <img id="captcha" src="/captcha" alt="CAPTCHA image">
+ 
+      <input type="submit" value="Envoyer">
+    </form>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2023 David Lo Giudice - Le Festiv'Allumés 2023   </p>
+      <div class="social-media-icons">
+        <a href="https://www.instagram.com/iammrspeedy/">
+          <img src="../images/global/instagram_logo.svg" alt="Instagram">
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const form = document.querySelector('.contact');
+    const progressBar = document.querySelector('#upload-progress');
+    const maxFileSize = 25 * 1024 * 1024; // 25 MB in bytes
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const fileInput = document.querySelector('#images');
+      const files = fileInput.files;
+
+      for (let i = 0; i < files.length; i++) {
+        if (files[i].size > maxFileSize) {
+          alert('File is too heavy. Maximum file size allowed is 25 MB.');
+          return;
+        }
+      }
+
+      const formData = new FormData(form);
+
+      const xhr = new XMLHttpRequest();
+      xhr.open(form.method, form.action);
+
+      xhr.upload.addEventListener('progress', (event) => {
+        if (event.lengthComputable) {
+          const percentComplete = (event.loaded / event.total) * 100;
+          progressBar.value = percentComplete;
+        }
+      });
+
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          console.log('Message sent successfully!');
+          alert('Media bien envoyé');
+          window.location.reload();
+        } else {
+          console.error('Error sending message:', xhr.responseText);
+        }
+      };
+
+      xhr.onerror = () => {
+        console.error('Error sending message:', xhr.responseText);
+      };
+
+      xhr.send(formData);
+    });
+  </script>
+
+</body>
+</html>

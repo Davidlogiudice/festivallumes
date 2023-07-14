@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Le Festiv'Allumés</title>
+  <link rel="stylesheet" type="text/css" href="../style/index.css">
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <a href="./about-me.html">
+        <img class="logo" src="../images/global/logo.svg" alt="Instagram">
+      </a>
+    </div>
+    <div class="nav-buttons">
+      <a href="./about-me.html">Photos festival !</a>
+      <a href="./contact.html">Partage photos et videos !</a>
+    </div>
+    <div id="instagram">
+      <a href="https://www.instagram.com/iammrspeedy/">
+        <img class="social-media-instagram" src="../images/global/instagram_logo.svg" alt="Instagram">
+      </a>
+    </div>
+  </header>
+  <h1>Les photos et videos du festival !</h1>
+  <main class="media-container">
+  
+  
+ 
+      <div class="media-item" onclick="openLightbox(1)">
+        <img id="media1" alt="Media 1">
+        <video id="media1" controls></video>
+      </div>
+      <div class="media-item" onclick="openLightbox(2)">
+        <img id="media2" alt="Media 2">
+        <video id="media2" controls></video>
+      </div>
+      <div class="media-item" onclick="openLightbox(3)">
+        <img id="media3" alt="Media 3">
+        <video id="media3" controls></video>
+      </div>
+
+
+    <div class="lightbox" id="lightbox">
+      <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+      <img id="lightbox-media" alt="Lightbox Media">
+      <video id="lightbox-media" controls></video>
+    </div>
+  </main>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2023 David Lo Giudice - Le Festiv'Allumés 2023   </p>
+      <div class="social-media-icons">
+        <a href="https://www.instagram.com/iammrspeedy/">
+          <img src="../images/global/instagram_logo.svg" alt="Instagram">
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Get references to the media elements
+    const media1 = document.getElementById("media1");
+    const media2 = document.getElementById("media2");
+    const media3 = document.getElementById("media3");
+    const lightbox = document.getElementById("lightbox");
+    const lightboxMedia = document.getElementById("lightbox-media");
+
+    // Fetch the list of media files from the server
+    fetch('/about-me')
+      .then(response => response.json())
+      .then(mediaList => {
+        // Randomly select three media files
+        const shuffledMedia = shuffle(mediaList);
+        const selectedMedia = shuffledMedia.slice(0, 3);
+
+        // Set the media sources and types
+        selectedMedia.forEach((media, index) => {
+          if (media.type === "image") {
+            const imgElement = document.getElementById(`media${index + 1}`);
+            imgElement.src = `/uploads/${media.filename}`;
+            imgElement.style.display = "block";
+            imgElement.nextElementSibling.style.display = "none";
+          } else if (media.type === "video") {
+            const videoElement = document.getElementById(`media${index + 1}`);
+            videoElement.src = `/uploads/${media.filename}`;
+            videoElement.style.display = "block";
+            videoElement.nextElementSibling.style.display = "none";
+          }
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching media list:', error);
+      });
+
+    // Function to shuffle an array
+    function shuffle(array) {
+      let currentIndex = array.length;
+      let temporaryValue;
+      let randomIndex;
+
+      // While there remain elements to shuffle
+      while (currentIndex !== 0) {
+        // Pick a remaining element
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // Swap it with the current element
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+      }
+
+      return array;
+    }
+
+    // Function to open the lightbox and display the selected media
+    function openLightbox(index) {
+      const mediaElement = document.getElementById(`media${index}`);
+      const mediaType = mediaElement.tagName.toLowerCase();
+      const mediaSrc = mediaElement.src;
+
+      lightboxMedia.src = mediaSrc;
+      lightboxMedia.style.display = "block";
+      lightboxMedia.nextElementSibling.style.display = "none";
+      lightbox.classList.add("show-lightbox");
+    }
+
+    // Function to close the lightbox
+    function closeLightbox() {
+      lightbox.classList.remove("show-lightbox");
+    }
+  </script>
+</body>
+</html>
