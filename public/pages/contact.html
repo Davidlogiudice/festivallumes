@@ -14,7 +14,7 @@
     </div>
     <div class="nav-buttons">
       <a href="./about-me.html">Photos festival !</a>
-      <a href="./contact.html">Partage photos et videos !</a>
+      <a href="./contact.html">Partage photos</a>
     </div>
     <div id="instagram">
       <a href="https://www.instagram.com/bandallumes/">
@@ -22,7 +22,7 @@
       </a>
     </div>
   </header>
-  <h1>Partage photos et videos</h1>
+  <h1>Partage photos</h1>
   <main class="flex-container">
  
     <form class="contact" action="/contact" method="post" enctype="multipart/form-data">
@@ -34,8 +34,8 @@
       <label for="message">Message:</label>
       <textarea id="message" name="message" placeholder="Entrez votre message !" required></textarea>
 
-      <label for="images">Envoyer Media (PNG or JPG, max 25 MB):</label>
-      <input type="file" id="images" name="images" accept="image/png, image/jpeg, video/mp4 " multiple required>
+      <label for="images">Envoyer photo(s) (PNG ou JPG, max 25 MB):</label>
+      <input type="file" id="images" name="images" accept="image/png, image/jpeg " multiple required>
       <progress id="upload-progress" max="100" value="0"></progress>
       
       <label for="captcha">CAPTCHA:</label>
